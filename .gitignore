@@ -1,0 +1,16 @@
+packages/*
+.vscode
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.cmake
+CMakeCache.txt
+*.sln
+CMakeFiles
+bin
+.vs
+lib
+x64
+x86
+*.dir
+Debug
