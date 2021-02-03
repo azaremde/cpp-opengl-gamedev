@@ -9,6 +9,8 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(app_v01)
 
+set_property(TARGET app_v01 PROPERTY CXX_STANDARD 17)
+
 add_subdirectory(packages/stb_image)
 add_subdirectory(packages/assimp)
 add_subdirectory(packages/glew/build/cmake)
