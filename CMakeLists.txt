@@ -16,6 +16,7 @@ add_subdirectory(packages/glew/build/cmake)
 
 add_subdirectory(external/stb_image)
 add_subdirectory(external/glfw)
+add_subdirectory(external/glm)
 
 add_subdirectory(packages/lua)
 add_subdirectory(packages/freetype)

@@ -29,11 +29,12 @@ target_include_directories(${project_name} PUBLIC src)
 
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_image)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/glfw/include)
+target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/glm)
 
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/glew/include)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/assimp/include)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/lua)
-target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/glm)
+# target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/glm)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/freetype/include)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/spdlog/include)
 
