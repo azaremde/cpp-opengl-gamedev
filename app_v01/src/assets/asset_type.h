@@ -1,10 +1,13 @@
 #pragma once
 
-enum class AssetType
+namespace assets
 {
-    Undefined,
-    Text,
-    Model,
-    Image,
-    Font
-};
+    enum class AssetType
+    {
+        Undefined,
+        Text,
+        Model,
+        Image,
+        Font
+    };
+}

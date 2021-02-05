@@ -2,13 +2,14 @@
 
 #include <glm/glm.hpp>
 
-namespace text
+namespace text {
+
+struct Character
 {
-    struct Character
-    {
-        unsigned int textureID;
-        glm::vec2 size;
-        glm::vec2 bearing;
-        unsigned int advance;
-    };
+    unsigned int textureID;
+    glm::vec2 size;
+    glm::vec2 bearing;
+    unsigned int advance;
+};
+
 }

@@ -1,6 +1,9 @@
 #pragma once
 
-struct ModelAsset
+namespace assets
 {
+    struct Model
+    {
 
-};
+    };
+}

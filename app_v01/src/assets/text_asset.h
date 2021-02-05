@@ -4,28 +4,31 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
-struct TextAsset
+namespace assets
 {
-    std::string content;
-};
-
-inline static void load_text_asset(TextAsset* asset, const std::string& path)
-{
-    std::ifstream fileStream(path, std::ios::in);
-
-    if (fileStream.is_open())
+    struct Text
     {
-        std::string line = "";
-        while (!fileStream.eof())
+        std::string content;
+    };
+
+    inline void load_text_asset(Text* asset, const std::string& path)
+    {
+        std::ifstream fileStream(path, std::ios::in);
+
+        if (fileStream.is_open())
         {
-            getline(fileStream, line);
-            asset->content.append(line + "\n");
+            std::string line = "";
+            while (!fileStream.eof())
+            {
+                getline(fileStream, line);
+                asset->content.append(line + "\n");
+            }
         }
-    }
-    else
-    {
-        spdlog::error("[{0}]: Could not read file {1}. File doesn't exist.", "text_asset.h", path);
-    }
+        else
+        {
+            spdlog::error("[DEBUG][text_asset.h]: Could not read file {0}. File doesn't exist.", path);
+        }
 
-    fileStream.close();
+        fileStream.close();
+    }
 }

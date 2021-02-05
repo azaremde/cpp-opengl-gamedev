@@ -1,22 +1,21 @@
 #pragma once
 
 #include <string>
-#include <any>
-#include <map>
-#include <sstream>
 #include <vector>
+#include <map>
 
 #include <spdlog/spdlog.h>
 
 #include "asset_macros.h"
+#include "asset_type.h"
 #include "text_asset.h"
 
 #include "util/strings/strings.h"
 #include "util/vectors/vectors.h"
 
-#include "asset_type.h"
+namespace assets {
 
-inline static std::map<AssetType, std::vector<std::string>> formats =
+inline std::map<AssetType, std::vector<std::string>> formats =
 {
     define_asset_type(AssetType::Model, "fbx", "obj"),
     define_asset_type(AssetType::Image, "png", "jpg"),
@@ -24,7 +23,7 @@ inline static std::map<AssetType, std::vector<std::string>> formats =
     define_asset_type(AssetType::Font, "ttf")
 };
 
-inline static AssetType extract_asset_type(const std::string& format)
+inline AssetType extract_asset_type(const std::string& format)
 {
     for (const auto& x : formats)
     {
@@ -41,7 +40,7 @@ inline static AssetType extract_asset_type(const std::string& format)
     return AssetType::Undefined;
 }
 
-inline static std::string extract_asset_format(const std::string& path)
+inline std::string extract_asset_format(const std::string& path)
 {
     const std::vector<std::string> parts = util::str::split(path, '.');
 
@@ -54,7 +53,7 @@ inline static std::string extract_asset_format(const std::string& path)
 }
 
 template <typename T>
-inline static void load_asset(T* res, const std::string& path)
+inline void load(T* res, const std::string& path)
 {
     std::string str_format = extract_asset_format(path);
     AssetType asset_type = extract_asset_type(str_format);
@@ -65,4 +64,6 @@ inline static void load_asset(T* res, const std::string& path)
             load_text_asset(res, path);
             break;
     }
+}
+
 }

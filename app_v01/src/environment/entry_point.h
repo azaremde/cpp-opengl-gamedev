@@ -14,6 +14,7 @@ int main()\
 		window_poll_events();\
 		app->update(0);\
 		window_clear();\
+		app->__render__();\
 		window_swap_buffers();\
 		window_clear_state();\
 	}\
