@@ -27,7 +27,7 @@ add_executable(${project_name} ${src})
 
 target_include_directories(${project_name} PUBLIC src)
 
-target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_image/include)
+target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_image)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/glfw/include)
 
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/packages/glew/include)
