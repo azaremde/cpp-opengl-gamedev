@@ -32,6 +32,7 @@ enum class WindowMode
 };
 
 inline const WindowMode default_window_mode = WindowMode::Windowed;
+inline const std::string default_window_title = "OpenGL application";
 
 struct Window
 {

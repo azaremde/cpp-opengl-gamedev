@@ -57,7 +57,7 @@ void create_window(Window* p_window)
 	p_window->p_glfw_window = glfwCreateWindow(
 		p_window->width,
 		p_window->height,
-		"",
+		default_window_title.c_str(),
 		(p_window->window_mode == WindowMode::Borderless || p_window->window_mode == WindowMode::Fullscreen)
 		? p_window->p_glfw_primary_monitor
 		: NULL,

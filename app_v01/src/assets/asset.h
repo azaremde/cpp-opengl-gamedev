@@ -28,8 +28,6 @@ inline AssetType extract_asset_type(const std::string& format)
     for (const auto& x : formats)
     {
         const std::vector<std::string> y = x.second;
-        
-        spdlog::info(format);
 
         if (util::vec::contains(y, format))
         {

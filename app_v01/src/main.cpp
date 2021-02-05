@@ -35,8 +35,6 @@ public:
 		assets::Text text;
 		assets::load(&text, "assets/foo.txt");
 
-		spdlog::info(text.content);
-
 		vao.bind();
 		vao.create_attribute(0, std::vector<float> { 
 			-0.5,  0.5, 0,
@@ -50,8 +48,6 @@ public:
 		proj = glm::perspective(glm::radians(70.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
 	}
-
-	float alpha = 0;
 
 	void __render__() override
 	{
