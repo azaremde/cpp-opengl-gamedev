@@ -11,10 +11,12 @@ add_subdirectory(app_v01)
 
 set_property(TARGET app_v01 PROPERTY CXX_STANDARD 17)
 
-add_subdirectory(packages/stb_image)
 add_subdirectory(packages/assimp)
 add_subdirectory(packages/glew/build/cmake)
-add_subdirectory(packages/glfw)
+
+add_subdirectory(external/stb_image)
+add_subdirectory(external/glfw)
+
 add_subdirectory(packages/lua)
 add_subdirectory(packages/freetype)
 add_subdirectory(packages/spdlog)
