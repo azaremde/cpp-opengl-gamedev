@@ -8,9 +8,11 @@ file(
     src/*.cpp
     src/**/*.cpp
     src/**/**/*.cpp
+    src/**/**/**/*.cpp
     src/*.h
     src/**/*.h
     src/**/**/*.h
+    src/**/**/**/*.h
 )
 
 file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)

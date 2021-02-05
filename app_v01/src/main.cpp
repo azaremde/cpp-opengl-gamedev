@@ -7,11 +7,17 @@
 #include <glm/glm.hpp>
 #include "math/math.h"
 
+#include "assets/asset.h"
+
 class Sandbox : public App
 {
 public:
 	void init() override
 	{
+		TextAsset text;
+		load_asset(&text, "assets/foo.txt");
+
+		spdlog::info(text.content);
 	}
 
 	void update(const float& deltaTime) override
