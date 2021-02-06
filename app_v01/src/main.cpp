@@ -20,6 +20,10 @@
 
 #include <stb_image/stb_image.h>
 
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+
 class Sandbox : public App
 {
 private:
@@ -28,9 +32,6 @@ private:
 
 	glm::mat4x4 proj = glm::mat4x4(1);
 	glm::mat4x4 model = glm::mat4x4(1);
-
-	math::mat4x4 my_proj;
-	math::mat4x4 my_model;
 
 public:
 	void init() override
@@ -49,30 +50,60 @@ public:
 		vao.unbind();
 
 		proj = glm::perspective(glm::radians(70.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
 
-		math::perspective(my_proj, glm::radians(70.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
+		// Setup Dear ImGui context
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-		math::identify(my_model);
-		math::translate(my_model, my_model, 0.0f, 0.0f, -5.0f);
+		ImGui_ImplGlfw_InitForOpenGL(window::window.get_window(), true);
+		ImGui_ImplOpenGL3_Init();
+
+		// Setup style
+		ImGui::StyleColorsDark();
 	}
 
-	math::mat4x4 trash;
+	float rot_x = 0;
+	float rot_y = 0;
+	float rot_z = 0;
 
-	float alpha = 0;
+	glm::vec3 quad_position;
+	glm::vec3 quad_rotation;
 
 	void __render__() override
 	{
-		math::rotate(my_model, my_model, glm::radians(0.5f), 1, 0, 0);
+		model = glm::identity<glm::mat4x4>();
+		model = glm::translate(model, quad_position);
+		model = glm::rotate(model, glm::radians(quad_rotation.x), glm::vec3(1, 0, 0));
+		model = glm::rotate(model, glm::radians(quad_rotation.y), glm::vec3(0, 1, 0));
+		model = glm::rotate(model, glm::radians(quad_rotation.z), glm::vec3(0, 0, 1));
 
 		shader.bind();
-		shader.set_mat4x4("u_model", my_model);
-
-		shader.set_mat4x4("u_proj", my_proj);
+		shader.set_mat4x4("u_model", model);
+		shader.set_mat4x4("u_proj", proj);
 		vao.bind();
 		glDrawElements(GL_TRIANGLES, vao.get_vertex_count(), GL_UNSIGNED_INT, nullptr);
 		vao.unbind();
 		shader.unbind();
+
+
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+		ImGui::Begin("Demo window");
+		ImGui::Button("Transform");
+		ImGui::SliderFloat("rot_x", &quad_rotation.x, 0.0f, 180.0f);
+		ImGui::SliderFloat("rot_y", &quad_rotation.y, 0.0f, 180.0f);
+		ImGui::SliderFloat("rot_z", &quad_rotation.z, 0.0f, 180.0f);
+		ImGui::SliderFloat("pos_x", &quad_position.x, -20.0f, 20.0f);
+		ImGui::SliderFloat("pos_y", &quad_position.y, -20.0f, 20.0f);
+		ImGui::SliderFloat("pos_z", &quad_position.z, -20.0f, 20.0f);
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	void update(const float& deltaTime) override

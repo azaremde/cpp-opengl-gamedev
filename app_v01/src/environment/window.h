@@ -2,25 +2,26 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <spdlog/spdlog.h>
+
+#include <string>
 
 #include "keyboard.h"
 
 /*
 * Here's what user might want to use.
 */
-#define window_init()			window::init(&window::window)
-#define window_should_close()	window::should_close(&window::window)
-#define window_poll_events()	window::poll_events(&window::window)
-#define window_clear()			window::clear(&window::window)
-#define window_swap_buffers()	window::swap_buffers(&window::window)
-#define window_clear_state()	window::clear_state(&window::window)
-#define window_shutdown()		window::shutdown(&window::window)
-#define window_close()			window::close(&window::window)
+#define window_init()			window::window.init()
+#define window_should_close()	window::window.should_close()
+#define window_poll_events()	window::window.poll_events()
+#define window_clear()			window::window.clear()
+#define window_swap_buffers()	window::window.swap_buffers()
+#define window_clear_state()	window::window.clear_state()
+#define window_shutdown()		window::window.shutdown()
+#define window_close()			window::window.close()
 
-#define window_width()			window::window.width
-#define window_height()			window::window.height
-#define window_ratio()			(float) window::window.width / (float) window::window.height
+#define window_width()			window::window.get_width()
+#define window_height()			window::window.get_height()
+#define window_ratio()			(float) window::window.get_width() / (float) window::window.get_height()
 
 namespace window {
 
@@ -34,8 +35,12 @@ enum class WindowMode
 inline const WindowMode default_window_mode = WindowMode::Windowed;
 inline const std::string default_window_title = "OpenGL application";
 
-struct Window
+/*
+ * Even a singleton can look nice.. 
+ */
+class Window
 {
+private:
 	GLFWvidmode* p_glfw_video_mode;
 	GLFWwindow* p_glfw_window;
 	GLFWmonitor* p_glfw_primary_monitor;
@@ -45,39 +50,41 @@ struct Window
 	unsigned int width;
 	unsigned int height;
 
-	#ifdef _DEBUG
-	Window()
+	void init_glfw();
+	void init_controllers();
+	void set_callbacks();
+	void init_glew();
+
+	void determine_resolution();
+	void set_hints();
+	void create_window();
+
+	static void on_resize(GLFWwindow* p_glfw_window, int width, int height);
+
+	Window();
+	
+public:
+
+	/* temp */ inline GLFWwindow* get_window()
 	{
-		spdlog::info("Main window has been created.");
+		return p_glfw_window;
 	}
 
-	~Window()
-	{
-		spdlog::info("Main window has been destroyed.");
-	}
-	#endif
+	static Window& get_instance();
 
-} inline window;
+	void init();
+	bool should_close();
+	void poll_events();
+	void clear();
+	void swap_buffers();
+	void clear_state();
+	void shutdown();
+	void close();
 
-void on_resize(GLFWwindow* p_glfw_window, int width, int height);
+	unsigned int get_width() const;
+	unsigned int get_height() const;
+};
 
-void init(Window* p_window);
-void init_glfw(Window* p_window);
-void init_controllers(Window* p_window);
-void set_callbacks(Window* p_window);
-void init_glew();
-
-void determine_resolution(Window* p_window);
-void set_hints(Window* p_window);
-void create_window(Window* p_window);
-
-void poll_events(Window* p_window);
-void clear(Window* p_window);
-void swap_buffers(Window* p_window);
-void clear_state(Window* p_window);
-bool should_close(Window* p_window);
-void shutdown(Window* p_window);
-
-void close(Window* p_window);
+inline Window window = Window::get_instance();
 	
 }
