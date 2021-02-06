@@ -29,6 +29,9 @@ private:
 	glm::mat4x4 proj = glm::mat4x4(1);
 	glm::mat4x4 model = glm::mat4x4(1);
 
+	math::mat4x4 my_proj;
+	math::mat4x4 my_model;
+
 public:
 	void init() override
 	{
@@ -47,15 +50,25 @@ public:
 
 		proj = glm::perspective(glm::radians(70.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+
+		math::perspective(my_proj, glm::radians(70.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
+
+		math::identify(my_model);
+		math::translate(my_model, my_model, 0.0f, 0.0f, -5.0f);
 	}
+
+	math::mat4x4 trash;
+
+	float alpha = 0;
 
 	void __render__() override
 	{
-		model = glm::rotate(model, glm::radians(0.2f), glm::vec3(0, 1, 0));
+		math::rotate(my_model, my_model, glm::radians(0.5f), 1, 0, 0);
 
 		shader.bind();
-		shader.set_mat4x4("u_model", model);
-		shader.set_mat4x4("u_proj", proj);
+		shader.set_mat4x4("u_model", my_model);
+
+		shader.set_mat4x4("u_proj", my_proj);
 		vao.bind();
 		glDrawElements(GL_TRIANGLES, vao.get_vertex_count(), GL_UNSIGNED_INT, nullptr);
 		vao.unbind();

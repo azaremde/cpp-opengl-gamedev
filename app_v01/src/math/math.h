@@ -7,12 +7,21 @@ namespace math
     using vec3 = float[3];
     using vec2 = float[2];
 
-    inline static const mat4x4 identity = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    };
+    inline void identify(mat4x4& output)
+    {
+        output[0][0] = 1; output[0][1] = 0; output[0][2] = 0; output[0][3] = 0;
+        output[1][0] = 0; output[1][1] = 1; output[1][2] = 0; output[1][3] = 0;
+        output[2][0] = 0; output[2][1] = 0; output[2][2] = 1; output[2][3] = 0;
+        output[3][0] = 0; output[3][1] = 0; output[3][2] = 0; output[3][3] = 1;
+    }
+
+    inline void nullify(mat4x4& output)
+    {
+        output[0][0] = 0; output[0][1] = 0; output[0][2] = 0; output[0][3] = 0;
+        output[1][0] = 0; output[1][1] = 0; output[1][2] = 0; output[1][3] = 0;
+        output[2][0] = 0; output[2][1] = 0; output[2][2] = 0; output[2][3] = 0;
+        output[3][0] = 0; output[3][1] = 0; output[3][2] = 0; output[3][3] = 0;
+    }
 
     inline void mul_mat4x4_vec4(vec4 R, const mat4x4 A, const vec4 B)
     {
@@ -22,121 +31,78 @@ namespace math
         R[3] = A[0][3] * B[0] + A[1][3] * B[1] + A[2][3] * B[2] + A[3][3] * B[3];
     }
 
-    inline void mul(vec4 R, vec4 a, vec4 b)
+    inline void dot_vec4_vec4(vec4& output, const vec4& a, const vec4& b)
     {
-        R[0] = a[0] * b[0];
-        R[1] = a[1] * b[1];
-        R[2] = a[2] * b[2];
-        R[3] = a[3] * b[3];
+        output[0] = a[0] * b[0];
+        output[1] = a[1] * b[1];
+        output[2] = a[2] * b[2];
+        output[3] = a[3] * b[3];
     }
 
-    inline void mul(vec4 R, vec4 a, float b, vec4 a1, float b1, vec4 a2, float b2)
+    inline void perspective(mat4x4& output, const float& fov, const float& aspect, const float& zNear, const float& zFar)
     {
-        R[0] = a[0] * b + a1[0] * b1 + a2[0] * b2;
-        R[1] = a[1] * b + a1[1] * b1 + a2[1] * b2;
-        R[2] = a[2] * b + a1[2] * b1 + a2[2] * b2;
-        R[3] = a[3] * b + a1[3] * b1 + a2[3] * b2;
-    }
-
-    inline void identify(mat4x4& R)
-    {
-        R[0][0] = 1;
-        R[0][1] = 0;
-        R[0][2] = 0;
-        R[0][3] = 0;
-        R[1][0] = 0;
-        R[1][1] = 1;
-        R[1][2] = 0;
-        R[1][3] = 0;
-        R[2][0] = 0;
-        R[2][1] = 0;
-        R[2][2] = 1;
-        R[2][3] = 0;
-        R[3][0] = 0;
-        R[3][1] = 0;
-        R[3][2] = 0;
-        R[3][3] = 1;
-    }
-
-    inline void nullify(mat4x4& R)
-    {
-        R[0][0] = 0;
-        R[0][1] = 0;
-        R[0][2] = 0;
-        R[0][3] = 0;
-        R[1][0] = 0;
-        R[1][1] = 0;
-        R[1][2] = 0;
-        R[1][3] = 0;
-        R[2][0] = 0;
-        R[2][1] = 0;
-        R[2][2] = 0;
-        R[2][3] = 0;
-        R[3][0] = 0;
-        R[3][1] = 0;
-        R[3][2] = 0;
-        R[3][3] = 0;
-    }
-
-    inline void perspective(mat4x4& R, float fov, float aspect, float zNear, float zFar)
-    {
-        nullify(R);
+        nullify(output);
 
 		float const tanHalfFovy = tan(fov / 2.0f);
 
-		R[0][0] = 1.0f / (aspect * tanHalfFovy);
-		R[1][1] = 1.0f / (tanHalfFovy);
-		R[2][2] = - (zFar + zNear) / (zFar - zNear);
-		R[2][3] = - 1.0f;
-		R[3][2] = - (2.0f * zFar * zNear) / (zFar - zNear);
+		output[0][0] = 1.0f / (aspect * tanHalfFovy);
+		output[1][1] = 1.0f / (tanHalfFovy);
+		output[2][2] = - (zFar + zNear) / (zFar - zNear);
+		output[2][3] = - 1.0f;
+		output[3][2] = - (2.0f * zFar * zNear) / (zFar - zNear);
     }
 
-    inline void mul_mat4x4_mat4x4(mat4x4 R, const mat4x4 A, const mat4x4 B)
+    inline void mul_mat4x4_mat4x4(mat4x4& output, const mat4x4& a, const mat4x4& b)
     {
-        R[0][0] = B[0][0] * A[0][0] + B[0][1] * A[1][0] + B[0][2] * A[2][0] + B[0][3] * A[3][0];
-        R[0][1] = B[0][0] * A[0][1] + B[0][1] * A[1][1] + B[0][2] * A[2][1] + B[0][3] * A[3][1];
-        R[0][2] = B[0][0] * A[0][2] + B[0][1] * A[1][2] + B[0][2] * A[2][2] + B[0][3] * A[3][2];
-        R[0][3] = B[0][0] * A[0][3] + B[0][1] * A[1][3] + B[0][2] * A[2][3] + B[0][3] * A[3][3];
+        output[0][0] = b[0][0] * a[0][0] + b[0][1] * a[1][0] + b[0][2] * a[2][0] + b[0][3] * a[3][0];
+        output[0][1] = b[0][0] * a[0][1] + b[0][1] * a[1][1] + b[0][2] * a[2][1] + b[0][3] * a[3][1];
+        output[0][2] = b[0][0] * a[0][2] + b[0][1] * a[1][2] + b[0][2] * a[2][2] + b[0][3] * a[3][2];
+        output[0][3] = b[0][0] * a[0][3] + b[0][1] * a[1][3] + b[0][2] * a[2][3] + b[0][3] * a[3][3];
 
-        R[1][0] = B[1][0] * A[0][0] + B[1][1] * A[1][0] + B[1][2] * A[2][0] + B[1][3] * A[3][0];
-        R[1][1] = B[1][0] * A[0][1] + B[1][1] * A[1][1] + B[1][2] * A[2][1] + B[1][3] * A[3][1];
-        R[1][2] = B[1][0] * A[0][2] + B[1][1] * A[1][2] + B[1][2] * A[2][2] + B[1][3] * A[3][2];
-        R[1][3] = B[1][0] * A[0][3] + B[1][1] * A[1][3] + B[1][2] * A[2][3] + B[1][3] * A[3][3];
+        output[1][0] = b[1][0] * a[0][0] + b[1][1] * a[1][0] + b[1][2] * a[2][0] + b[1][3] * a[3][0];
+        output[1][1] = b[1][0] * a[0][1] + b[1][1] * a[1][1] + b[1][2] * a[2][1] + b[1][3] * a[3][1];
+        output[1][2] = b[1][0] * a[0][2] + b[1][1] * a[1][2] + b[1][2] * a[2][2] + b[1][3] * a[3][2];
+        output[1][3] = b[1][0] * a[0][3] + b[1][1] * a[1][3] + b[1][2] * a[2][3] + b[1][3] * a[3][3];
 
-        R[2][0] = B[2][0] * A[0][0] + B[2][1] * A[1][0] + B[2][2] * A[2][0] + B[2][3] * A[3][0];
-        R[2][1] = B[2][0] * A[0][1] + B[2][1] * A[1][1] + B[2][2] * A[2][1] + B[2][3] * A[3][1];
-        R[2][2] = B[2][0] * A[0][2] + B[2][1] * A[1][2] + B[2][2] * A[2][2] + B[2][3] * A[3][2];
-        R[2][3] = B[2][0] * A[0][3] + B[2][1] * A[1][3] + B[2][2] * A[2][3] + B[2][3] * A[3][3];
+        output[2][0] = b[2][0] * a[0][0] + b[2][1] * a[1][0] + b[2][2] * a[2][0] + b[2][3] * a[3][0];
+        output[2][1] = b[2][0] * a[0][1] + b[2][1] * a[1][1] + b[2][2] * a[2][1] + b[2][3] * a[3][1];
+        output[2][2] = b[2][0] * a[0][2] + b[2][1] * a[1][2] + b[2][2] * a[2][2] + b[2][3] * a[3][2];
+        output[2][3] = b[2][0] * a[0][3] + b[2][1] * a[1][3] + b[2][2] * a[2][3] + b[2][3] * a[3][3];
 
-        R[3][0] = B[3][0] * A[0][0] + B[3][1] * A[1][0] + B[3][2] * A[2][0] + B[3][3] * A[3][0];
-        R[3][1] = B[3][0] * A[0][1] + B[3][1] * A[1][1] + B[3][2] * A[2][1] + B[3][3] * A[3][1];
-        R[3][2] = B[3][0] * A[0][2] + B[3][1] * A[1][2] + B[3][2] * A[2][2] + B[3][3] * A[3][2];
-        R[3][3] = B[3][0] * A[0][3] + B[3][1] * A[1][3] + B[3][2] * A[2][3] + B[3][3] * A[3][3];
+        output[3][0] = b[3][0] * a[0][0] + b[3][1] * a[1][0] + b[3][2] * a[2][0] + b[3][3] * a[3][0];
+        output[3][1] = b[3][0] * a[0][1] + b[3][1] * a[1][1] + b[3][2] * a[2][1] + b[3][3] * a[3][1];
+        output[3][2] = b[3][0] * a[0][2] + b[3][1] * a[1][2] + b[3][2] * a[2][2] + b[3][3] * a[3][2];
+        output[3][3] = b[3][0] * a[0][3] + b[3][1] * a[1][3] + b[3][2] * a[2][3] + b[3][3] * a[3][3];
     }
 
-    inline void rotate(mat4x4& result, float alpha, float ux, float uy, float uz)
+    inline void rotate(mat4x4& output, const mat4x4& input, const float& alpha, const float& ux, const float& uy, const float& uz)
     {
         float cosa = cos(alpha);
         float sina = sin(alpha);
 
-        result[0][0] = cosa + ux * ux * (1 - cosa);
-        result[1][0] = ux * uy * (1 - cosa) - uz * sina;
-        result[2][0] = ux * uz * (1 - cosa) + uy * sina;
+        mat4x4 rotate;
+        identify(rotate);
 
-        result[0][1] = uy * ux * (1 - cosa) + uz * sina;
-        result[1][1] = cosa + uy * uy * (1 - cosa);
-        result[2][1] = uy * uz * (1 - cosa) - ux * sina;
+        rotate[0][0] = cosa + ux * ux * (1 - cosa);
+        rotate[1][0] = ux * uy * (1 - cosa) - uz * sina;
+        rotate[2][0] = ux * uz * (1 - cosa) + uy * sina;
 
-        result[0][2] = uz * ux * (1 - cosa) - uy * sina;
-        result[1][2] = uz * uy * (1 - cosa) + ux * sina;
-        result[2][2] = cosa + uz * uz * (1 - cosa);
+        rotate[0][1] = uy * ux * (1 - cosa) + uz * sina;
+        rotate[1][1] = cosa + uy * uy * (1 - cosa);
+        rotate[2][1] = uy * uz * (1 - cosa) - ux * sina;
+
+        rotate[0][2] = uz * ux * (1 - cosa) - uy * sina;
+        rotate[1][2] = uz * uy * (1 - cosa) + ux * sina;
+        rotate[2][2] = cosa + uz * uz * (1 - cosa);
+        
+        mul_mat4x4_mat4x4(output, input, rotate);
     }
 
-    inline void translate(mat4x4& result, float ux, float uy, float uz)
-    {        
-        result[3][0] = result[0][0] * ux + result[1][0] * uy + result[2][0] * uz + result[3][0];
-        result[3][1] = result[0][1] * ux + result[1][1] * uy + result[2][1] * uz + result[3][1];
-        result[3][2] = result[0][2] * ux + result[1][2] * uy + result[2][2] * uz + result[3][2];
-        result[3][3] = result[0][3] * ux + result[1][3] * uy + result[2][3] * uz + result[3][3];
+    inline void translate(mat4x4& output, const mat4x4& input, float ux, float uy, float uz)
+    {
+        output[3][0] = input[0][0] * ux + input[1][0] * uy + input[2][0] * uz + input[3][0];
+        output[3][1] = input[0][1] * ux + input[1][1] * uy + input[2][1] * uz + input[3][1];
+        output[3][2] = input[0][2] * ux + input[1][2] * uy + input[2][2] * uz + input[3][2];
+        output[3][3] = input[0][3] * ux + input[1][3] * uy + input[2][3] * uz + input[3][3];
     }
 }
