@@ -61,6 +61,8 @@ public:
 
 		// Setup style
 		ImGui::StyleColorsDark();
+
+		glDisable(GL_CULL_FACE);
 	}
 
 	float rot_x = 0;
@@ -92,8 +94,8 @@ public:
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-		ImGui::Begin("Demo window");
-		ImGui::Button("Transform");
+		ImGui::Begin("Transform");
+		ImGui::Button("Reset");
 		ImGui::SliderFloat("rot_x", &quad_rotation.x, 0.0f, 180.0f);
 		ImGui::SliderFloat("rot_y", &quad_rotation.y, 0.0f, 180.0f);
 		ImGui::SliderFloat("rot_z", &quad_rotation.z, 0.0f, 180.0f);
