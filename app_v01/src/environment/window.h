@@ -6,6 +6,7 @@
 #include <string>
 
 #include "keyboard.h"
+#include "mouse.h"
 
 /*
 * Here's what user might want to use.

@@ -41,6 +41,7 @@ void Window::set_hints()
 void Window::init_controllers()
 {
 	keyboard::init(p_glfw_window);
+	mouse::init(p_glfw_window);
 }
 
 void Window::set_callbacks()
@@ -49,6 +50,7 @@ void Window::set_callbacks()
 	//glfwSetMouseButtonCallback(self.window, Mouse::onButtonPress);
 	glfwSetWindowSizeCallback(p_glfw_window, on_resize);
 	glfwSetKeyCallback(p_glfw_window, keyboard::on_key_press);
+	glfwSetMouseButtonCallback(p_glfw_window, mouse::on_button_press);
 }
 
 void Window::create_window()
@@ -67,6 +69,7 @@ void Window::create_window()
 	glfwSwapInterval(1);
 	glfwMaximizeWindow(p_glfw_window);
 	glfwShowWindow(p_glfw_window);
+	glfwGetWindowSize(p_glfw_window, (int*) &width, (int*) &height);
 }
 
 void Window::init_glfw()
@@ -119,6 +122,7 @@ void Window::swap_buffers()
 void Window::clear_state()
 {
 	keyboard::clear_state();
+	mouse::clear_state();
 }
 
 bool Window::should_close()
