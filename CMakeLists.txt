@@ -11,6 +11,10 @@ add_subdirectory(app_v01)
 
 set_property(TARGET app_v01 PROPERTY CXX_STANDARD 17)
 
+set(GLFW_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/glfw/include)
+set(GLEW_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/glew/include)
+
+add_subdirectory(external/imgui)
 add_subdirectory(external/assimp)
 add_subdirectory(external/stb_image)
 add_subdirectory(external/glfw)

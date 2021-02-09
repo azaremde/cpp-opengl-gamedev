@@ -35,6 +35,7 @@ target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/a
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/lua/lua-5.4.0/include)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/freetype/include)
 target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/spdlog/include)
+target_include_directories(${project_name} PUBLIC ${CMAKE_SOURCE_DIR}/external/imgui/include)
 
 target_link_libraries(${project_name} stb_image)
 target_link_libraries(${project_name} glew_s)
@@ -43,3 +44,4 @@ target_link_libraries(${project_name} lua_static)
 target_link_libraries(${project_name} assimp)
 target_link_libraries(${project_name} freetype)
 target_link_libraries(${project_name} spdlog)
+target_link_libraries(${project_name} imgui)
